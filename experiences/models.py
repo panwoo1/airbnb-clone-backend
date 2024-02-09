@@ -35,6 +35,12 @@ class Perk(CommonModel):
         blank=True,
         default="",
     )
+    category = models.ForeignKey(
+        "categories.Category",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
 
     def __str__(self) -> str:
         return self.name
