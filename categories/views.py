@@ -6,12 +6,12 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Category
-from .serializers import CategorySerilizer
+from .serializers import CategorySerializer
 
 
 class CategoryViewSet(ModelViewSet):
 
-    serializer_class = CategorySerilizer
+    serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
 
