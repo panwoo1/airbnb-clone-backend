@@ -11,6 +11,7 @@ from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 
 from categories.models import Category
+from medias.serializers import PhotoSerilizer
 from reviews.serializers import ReviewSerializer
 
 from .models import Amenity, Room
@@ -240,4 +241,20 @@ class RoomPhotos(APIView):
             raise NotFound
 
     def post(self, request, pk):
-        pass
+
+        room = self.get_object(pk)
+
+        if not request.user.is_authenticated:
+            raise NotAuthenticated
+
+        if request.user != room.owner:
+            raise PermissionDenied
+
+        serializer = PhotoSerilizer(data=request.data)
+
+        if serializer.is_valid():
+            photo = serializer.save(room=room)
+            serializer = PhotoSerilizer(photo)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
