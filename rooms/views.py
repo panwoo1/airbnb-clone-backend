@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import transaction
 from rest_framework.exceptions import (
     NotAuthenticated,
@@ -192,7 +193,7 @@ class RoomReviews(APIView):
             page = int(page)
         except ValueError:
             page = 1
-        page_size = 3
+        page_size = settings.PAGE_SIZE
         start = (page - 1) * page_size
         end = start + page_size
         room = self.get_object(pk)
@@ -219,7 +220,7 @@ class RoomAmenities(APIView):
             page = 1
 
         room = self.get_object(pk)
-        page_size = 3
+        page_size = settings.PAGE_SIZE
         start = (page - 1) * page_size
         end = start + page_size
         room = self.get_object(pk)
@@ -228,3 +229,15 @@ class RoomAmenities(APIView):
             many=True,
         )
         return Response(serializer.data)
+
+
+class RoomPhotos(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            raise NotFound
+
+    def post(self, request, pk):
+        pass
