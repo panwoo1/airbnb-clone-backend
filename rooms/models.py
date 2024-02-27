@@ -9,17 +9,30 @@ class Room(CommonModel):
     class RoomKindChoices(models.TextChoices):
         ENTIRE_PLACE = ("entire_place", "Entire Place")
         PRIVATE_ROOM = ("private_room", "Private Room")
-        SHARED_ROOM = ("shared_room", "Shared Room")
+        SHARED_ROOM = "shared_room", "Shared Room"
 
-    name = models.CharField(max_length=180, default="")
-    country = models.CharField(max_length=50, default="한국")
-    city = models.CharField(max_length=80, default="서울")
+    name = models.CharField(
+        max_length=180,
+        default="",
+    )
+    country = models.CharField(
+        max_length=50,
+        default="한국",
+    )
+    city = models.CharField(
+        max_length=80,
+        default="서울",
+    )
     price = models.PositiveIntegerField()
     rooms = models.PositiveIntegerField()
     toilets = models.PositiveIntegerField()
     description = models.TextField()
-    address = models.CharField(max_length=250)
-    pet_friendly = models.BooleanField(default=True)
+    address = models.CharField(
+        max_length=250,
+    )
+    pet_friendly = models.BooleanField(
+        default=True,
+    )
     kind = models.CharField(
         max_length=20,
         choices=RoomKindChoices.choices,
@@ -31,27 +44,26 @@ class Room(CommonModel):
     )
     amenities = models.ManyToManyField(
         "rooms.Amenity",
-        related_name="amenities",
+        related_name="rooms",
     )
-
     category = models.ForeignKey(
         "categories.Category",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="category",
+        related_name="rooms",
     )
 
-    def __str__(self) -> str:
-        return self.name
+    def __str__(room) -> str:
+        return room.name
 
-    def total_amenities(self):
-        return self.amenities.count()
+    def total_amenities(room):
+        return room.amenities.count()
 
     def rating(room):
         count = room.reviews.count()
         if count == 0:
-            return "No Reivews"
+            return 0
         else:
             total_rating = 0
             for review in room.reviews.all().values("rating"):
@@ -60,7 +72,7 @@ class Room(CommonModel):
 
 
 class Amenity(CommonModel):
-    """Amenity Definition"""
+    """Amenity Definiton"""
 
     name = models.CharField(
         max_length=150,
