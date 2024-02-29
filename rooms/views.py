@@ -294,8 +294,8 @@ class RoomBookings(APIView):
             kind=Booking.BookingKindChoices.ROOM,
             check_in__gt=now,
         )
-        serializers = PublicBookingSerializer(bookings, many=True)
-        return Response(serializers.data)
+        serializer = PublicBookingSerializer(bookings, many=True)
+        return Response(serializer.data)
 
     def post(self, request, pk):
         room = self.get_object(pk)
