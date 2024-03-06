@@ -13,6 +13,7 @@ pillow = "^10.2.0"
 djangorestframework = "^3.14.0"
 strawberry-graphql = {extras = ["debug-server"], version = "^0.219.2"}
 strawberry-graphql-django = "^0.32.2"
+pyjwt = "^2.8.0"
 
 
 [build-system]
